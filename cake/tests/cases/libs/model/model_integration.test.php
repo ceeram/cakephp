@@ -155,16 +155,13 @@ class ModelIntegrationTest extends BaseModelTest {
  * @return void
  */
 	function testFindWithJoinsOption() {
-		$config = new DATABASE_CONFIG();
-
 		$this->loadFixtures('Article', 'User');
 		$TestUser =& new User();
-		$TestUser->virtualFields = array('count' => "Count(`Article`.`id`)");
 
 		$options = array (
 			'fields' => array(
 				'user',
-				'count',
+				'Article.published',
 			),
 			'joins' => array (
 				array (
@@ -181,10 +178,10 @@ class ModelIntegrationTest extends BaseModelTest {
 		);
 		$result = $TestUser->find('all', $options);
 		$expected = array(
-			array('User' => array('user' => 'garrett', 'count' => 0)),
-			array('User' => array('user' => 'larry', 'count' => 1)),
-			array('User' => array('user' => 'mariano', 'count' => 2)),
-			array('User' => array('user' => 'nate', 'count' => 0))
+			array('User' => array('user' => 'garrett'), 'Article' => array('published' => '')),
+			array('User' => array('user' => 'larry'), 'Article' => array('published' => 'Y')),
+			array('User' => array('user' => 'mariano'), 'Article' => array('published' => 'Y')),
+			array('User' => array('user' => 'nate'), 'Article' => array('published' => ''))
 		);
 		$this->assertEqual($result, $expected);
 	}
