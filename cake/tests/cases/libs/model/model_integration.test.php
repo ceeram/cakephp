@@ -158,7 +158,7 @@ class ModelIntegrationTest extends BaseModelTest {
 		$config = new DATABASE_CONFIG();
 
 		$skip = $this->skipIf(
-			!isset($config->test->prefix),
+			!isset($config->test['prefix']),
 			 '%s To run these tests, you must define a prefix in your database $test configuration.'
 		);
 
