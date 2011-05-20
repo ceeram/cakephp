@@ -149,6 +149,55 @@ class ModelIntegrationTest extends BaseModelTest {
 	}
 
 /**
+ * testFindWithJoinsOption method
+ *
+ * @access public
+ * @return void
+ */
+	function testFindWithJoinsOption() {
+		$config = new DATABASE_CONFIG();
+
+		$skip = $this->skipIf(
+			!isset($config->test->prefix),
+			 '%s To run these tests, you must define a prefix in your database $test configuration.'
+		);
+
+		if ($skip) {
+			return;
+		}
+		$this->loadFixtures('Article', 'User');
+		$TestUser =& new User();
+		$TestUser->virtualFields = array('count' => "Count(`Article`.`id`)");
+
+		$options = array (
+			'fields' => array(
+				'user',
+				'count',
+			),
+			'joins' => array (
+				array (
+					'table' => 'articles',
+					'alias' => 'Article',
+					'type'  => 'LEFT',
+					'conditions' => array(
+						'User.id = Article.user_id',
+					),
+				),
+			),
+			'group' => array('User.user'),
+			'recursive' => -1,
+		);
+		$result = $TestUser->find('all', $options);
+		$expected = array(
+			array('User' => array('user' => 'garrett', 'count' => 0)),
+			array('User' => array('user' => 'larry', 'count' => 1)),
+			array('User' => array('user' => 'mariano', 'count' => 2)),
+			array('User' => array('user' => 'nate', 'count' => 0))
+		);
+		$this->assertEqual($result, $expected);
+	}
+
+/**
  * Tests cross database joins.  Requires $test and $test2 to both be set in DATABASE_CONFIG
  * NOTE: When testing on MySQL, you must set 'persistent' => false on *both* database connections,
  * or one connection will step on the other.
