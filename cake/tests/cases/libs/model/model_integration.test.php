@@ -157,14 +157,6 @@ class ModelIntegrationTest extends BaseModelTest {
 	function testFindWithJoinsOption() {
 		$config = new DATABASE_CONFIG();
 
-		$skip = $this->skipIf(
-			!isset($config->test['prefix']),
-			 '%s To run these tests, you must define a prefix in your database $test configuration.'
-		);
-
-		if ($skip) {
-			return;
-		}
 		$this->loadFixtures('Article', 'User');
 		$TestUser =& new User();
 		$TestUser->virtualFields = array('count' => "Count(`Article`.`id`)");
