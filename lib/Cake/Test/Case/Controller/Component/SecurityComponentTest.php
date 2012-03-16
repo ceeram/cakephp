@@ -1047,6 +1047,7 @@ class SecurityComponentTest extends CakeTestCase {
 /**
  * test that a requestAction's controller will have the _Token appended to
  * the params.
+ * @group stderr
  *
  * @return void
  * @see http://cakephp.lighthouseapp.com/projects/42648/tickets/68
@@ -1245,6 +1246,7 @@ class SecurityComponentTest extends CakeTestCase {
 
 /**
  * test that csrfUseOnce = false works.
+ * @group stderr
  *
  * @return void
  */

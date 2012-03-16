@@ -283,6 +283,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testId method
+ * @group stderr
  *
  * @return void
  */
@@ -300,6 +301,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testStarted method
+ * @group stderr
  *
  * @return void
  */
@@ -314,6 +316,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testError method
+ * @group stderr
  *
  * @return void
  */
@@ -329,6 +332,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testDel method
+ * @group stderr
  *
  * @return void
  */
@@ -346,6 +350,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testDestroy method
+ * @group stderr
  *
  * @return void
  */
@@ -360,6 +365,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testCheckingSavedEmpty method
+ * @group stderr
  *
  * @return void
  */
@@ -379,6 +385,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testCheckKeyWithSpaces method
+ * @group stderr
  *
  * @return void
  */
@@ -393,6 +400,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testCheckEmpty
+ * @group stderr
  *
  * @return void
  */
@@ -402,6 +410,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * test key exploitation
+ * @group stderr
  *
  * @return void
  */
@@ -416,6 +425,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testReadingSavedEmpty method
+ * @group stderr
  *
  * @return void
  */
@@ -436,6 +446,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testCheckUserAgentFalse method
+ * @group stderr
  *
  * @return void
  */
@@ -447,6 +458,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testCheckUserAgentTrue method
+ * @group stderr
  *
  * @return void
  */
@@ -462,6 +474,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testReadAndWriteWithDatabaseStorage method
+ * @group stderr
  *
  * @return void
  */
@@ -497,6 +510,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * test using a handler from app/Model/Datasource/Session.
+ * @group stderr
  *
  * @return void
  */
@@ -521,6 +535,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * test using a handler from a plugin.
+ * @group stderr
  *
  * @return void
  */
@@ -545,6 +560,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testReadAndWriteWithDatabaseStorage method
+ * @group stderr
  *
  * @return void
  */
@@ -580,6 +596,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * test that changing the config name of the cache config works.
+ * @group stderr
  *
  * @return void
  */
@@ -604,6 +621,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testReadAndWriteWithDatabaseStorage method
+ * @group stderr
  *
  * @return void
  */
@@ -646,6 +664,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * testSessionTimeout method
+ * @group stderr
  *
  * @return void
  */
@@ -677,6 +696,7 @@ class CakeSessionTest extends CakeTestCase {
 
 /**
  * Test that cookieTimeout matches timeout when unspecified.
+ * @group stderr
  *
  * @return void
  */

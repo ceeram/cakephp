@@ -594,6 +594,7 @@ class RssHelperTest extends CakeTestCase {
 
 /**
  * test item() with enclosure data.
+ * @group stderr
  *
  * @return void
  */
