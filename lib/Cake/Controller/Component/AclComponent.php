@@ -58,16 +58,6 @@ class AclComponent extends Component {
 	public function __construct(ComponentCollection $collection, $settings = array()) {
 		parent::__construct($collection, $settings);
 		$name = Configure::read('Acl.classname');
-		if (!class_exists($name)) {
-			list($plugin, $name) = pluginSplit($name, true);
-			App::uses($name . 'Component', $plugin . 'Controller/Component');
-			App::uses($name, 'Controller/Component/Acl');
-			if (class_exists($name . 'Component')) {
-				$name .= 'Component';
-			} elseif (!class_exists($name)) {
-				throw new CakeException(__d('cake_dev', 'Could not find %s.', $name));
-			}
-		}
 		$this->adapter($name);
 	}
 
@@ -81,21 +71,25 @@ class AclComponent extends Component {
  *
  * @param mixed $adapter Instance of AclInterface or a string name of the class to use. (optional)
  * @return mixed either null, or the adapter implementation.
- * @throws CakeException when the given class is not an instance of AclInterface
+ * @throws CakeException when the given class could not be found or is not an instance of AclInterface
  */
 	public function adapter($adapter = null) {
-		if ($adapter) {
-			if (is_string($adapter)) {
-				$adapter = new $adapter();
-			}
-			if (!$adapter instanceof AclInterface) {
-				throw new CakeException(__d('cake_dev', 'AclComponent adapters must implement AclInterface'));
-			}
-			$this->_Instance = $adapter;
-			$this->_Instance->initialize($this);
-			return;
+		if (!$adapter) {
+			return $this->_Instance;
 		}
-		return $this->_Instance;
+		if (is_string($adapter)) {
+			list($plugin, $adapter) = pluginSplit($adapter, true);
+			App::uses($adapter, $plugin . 'Controller/Component/Acl');
+			if (!class_exists($adapter)) {
+				throw new CakeException(__d('cake_dev', 'Could not find %s.', $adapter));
+			}
+			$adapter = new $adapter();
+		}
+		if (!$adapter instanceof AclInterface) {
+			throw new CakeException(__d('cake_dev', 'AclComponent adapters must implement AclInterface'));
+		}
+		$this->_Instance = $adapter;
+		$this->_Instance->initialize($this);
 	}
 
 /**
