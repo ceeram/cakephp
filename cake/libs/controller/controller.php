@@ -401,7 +401,11 @@ class Controller extends Object {
 		$pluginController = $pluginName . 'AppController';
 
 		if (is_subclass_of($this, 'AppController') || is_subclass_of($this, $pluginController)) {
-			$appVars = get_class_vars('AppController');
+			$mergeParent = 'AppController';
+			if (!is_subclass_of($this, 'AppController')) {
+				$mergeParent = 'Controller';
+			}
+			$appVars = get_class_vars($mergeParent);
 			$uses = $appVars['uses'];
 			$merge = array('components', 'helpers');
 			$plugin = null;
@@ -427,42 +431,37 @@ class Controller extends Object {
 			} else {
 				$merge[] = 'uses';
 			}
-
-			foreach ($merge as $var) {
-				if (!empty($appVars[$var]) && is_array($this->{$var})) {
-					if ($var !== 'uses') {
-						$normal = Set::normalize($this->{$var});
-						$app = Set::normalize($appVars[$var]);
-						if ($app !== $normal) {
-							$this->{$var} = Set::merge($app, $normal);
-						}
-					} else {
-						$this->{$var} = array_merge($this->{$var}, array_diff($appVars[$var], $this->{$var}));
-					}
-				}
-			}
+			$this->__applyMergeVars($merge, $appVars);
 		}
 
 		if ($pluginController && $pluginName != null) {
 			$appVars = get_class_vars($pluginController);
-			$uses = $appVars['uses'];
 			$merge = array('components', 'helpers');
 
 			if ($this->uses !== null && $this->uses !== false) {
 				$merge[] = 'uses';
 			}
+			$this->__applyMergeVars($merge, $appVars);
+		}
+	}
 
-			foreach ($merge as $var) {
-				if (isset($appVars[$var]) && !empty($appVars[$var]) && is_array($this->{$var})) {
-					if ($var !== 'uses') {
-						$normal = Set::normalize($this->{$var});
-						$app = Set::normalize($appVars[$var]);
-						if ($app !== $normal) {
-							$this->{$var} = Set::merge($app, $normal);
-						}
-					} else {
-						$this->{$var} = array_merge($this->{$var}, array_diff($appVars[$var], $this->{$var}));
+/**
+ * Helper method to apply mergeVars
+ *
+ * @return void
+ * @access protected
+ */
+	function __applyMergeVars($merge, $appVars) {
+		foreach ($merge as $var) {
+			if (!empty($appVars[$var]) && is_array($this->{$var})) {
+				if ($var !== 'uses') {
+					$normal = Set::normalize($this->{$var});
+					$app = Set::normalize($appVars[$var]);
+					if ($app !== $normal) {
+						$this->{$var} = Set::merge($app, $normal);
 					}
+				} else {
+					$this->{$var} = array_merge($this->{$var}, array_diff($appVars[$var], $this->{$var}));
 				}
 			}
 		}
