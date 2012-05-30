@@ -2,7 +2,7 @@
 
 namespace Cake\Model\Datasource\Database;
 
-use PDOException,
+use PDO, PDOException,
 	Cake\Model\Datasource\Database\Exception\MissingDriverException,
 	Cake\Model\Datasource\Database\Exception\MissingExtensionException,
 	Cake\Model\Datasource\Database\Exception\MissingConnectionException;
@@ -36,6 +36,13 @@ class Connection {
 	protected $_connected = false;
 
 /**
+ * PDO instance associated to this connection
+ *
+ * @var PDO
+ **/
+	protected $_connection;
+
+/**
  * Constructor
  *
  * @param array $config configuration for conencting to database
@@ -66,10 +73,17 @@ class Connection {
 			return false;
 		}
 		try {
-			return $this->_connected = $this->_driver->connect($this->_config);
+			$config = $this->_driver->config($this->_config);
+			$this->_connection = new PDO(
+				$config['dsn'],
+				$config['username'],
+				$config['password'],
+				$config['flags']
+			);
 		} catch(\Exception $e) {
 			throw new MissingConnectionException(array('reason' => $e->getMessage()));
 		}
+		return $this->_connected = true;
 	}
 
 /**
@@ -78,7 +92,7 @@ class Connection {
  * @return void
  **/
 	public function disconnect() {
-		$this->_driver->disconnect();
+		$this->_connection = null;
 		$this->_connected = false;
 	}
 
@@ -99,7 +113,8 @@ class Connection {
  **/
 	public function prepare($sql) {
 		$this->connect();
-		return $this->_driver->prepare($sql);
+		$statement = $this->_connection->prepare($sql);
+		return new Statement($statement, $this->_driver);
 	}
 
 /**

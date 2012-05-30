@@ -15,12 +15,12 @@ class Mysql extends \Cake\Model\Datasource\Database\Driver {
 	protected $_baseConfig = array(
 		'persistent' => true,
 		'host' => 'localhost',
-		'login' => 'root',
+		'username' => 'root',
 		'password' => '',
 		'database' => 'cake',
 		'port' => '3306',
 		'flags' => array(),
-		'encoding' => 'utf8'
+		'encoding' => 'utf8',
 	);
 
 /**
@@ -34,40 +34,28 @@ class Mysql extends \Cake\Model\Datasource\Database\Driver {
  * Establishes a conenction to the databse server
  *
  * @param array $config configuretion to be used for creating connection
- * @return boolean true on success
+ * @return array Config array
  **/
-	public function connect(array $config) {
+	public function config(array $config) {
 		$config += $this->_baseConfig;
-		$flags = array(
-			PDO::ATTR_PERSISTENT => $config['persistent'],
-			PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
-			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-			PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $config['encoding']
-		) + $config['flags'];
-
-		if (empty($config['unix_socket'])) {
-			$dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['database']}";
-		} else {
-			$dsn = "mysql:unix_socket={$config['unix_socket']};dbname={$config['database']}";
+		if (empty($config['flags'])) {
+			$config['flags'] = array(
+				PDO::ATTR_PERSISTENT => $config['persistent'],
+				PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+				PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $config['encoding']
+			) + $config['flags'];
 		}
 
-		$this->_connection = new PDO(
-			$dsn,
-			$config['login'],
-			$config['password'],
-			$flags
-		);
+		if (empty($config['dsn'])) {
+			if (empty($config['unix_socket'])) {
+				$config['dsn'] = "mysql:host={$config['host']};port={$config['port']};dbname={$config['database']}";
+			} else {
+				$config['dsn'] = "mysql:unix_socket={$config['unix_socket']};dbname={$config['database']}";
+			}
+		}
 
-		return true;
-	}
-
-/**
- * Disconnects from database server
- *
- * @return void
- **/
-	public function disconnect() {
-		$this->_connection = null;
+		return $config;
 	}
 
 /**
@@ -78,17 +66,6 @@ class Mysql extends \Cake\Model\Datasource\Database\Driver {
 
 	public function enabled() {
 		return in_array('mysql', PDO::getAvailableDrivers());
-	}
-
-/**
- * Prepares a sql statement to be executed
- *
- * @param string $sql
- * @return Cake\Model\Datasource\Database\Statement
- **/
-	public  function prepare($sql) {
-		$statement = $this->_connection->prepare($sql);
-		return new Statement($statement, $this);
 	}
 
 }

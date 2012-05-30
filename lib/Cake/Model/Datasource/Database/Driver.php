@@ -10,19 +10,12 @@ namespace Cake\Model\Datasource\Database;
 abstract class Driver {
 
 /**
- * Establishes a conenction to the databse server
+ * Set specific driver configs
  *
  * @param array $config configuretion to be used for creating connection
- * @return boolean true con success
+ * @return array Configs array
  **/
-	public abstract function connect(array $config);
-
-/**
- * Disconnects from database server
- *
- * @return void
- **/
-	public abstract function disconnect();
+	public abstract function config(array $config);
 
 /**
  * Returns wheter php is able to use this driver for connecting to database
@@ -30,13 +23,5 @@ abstract class Driver {
  * @return boolean true if it is valid to use this driver
  **/
 	public abstract function enabled();
-
-/**
- * Prepares a sql statement to be executed
- *
- * @param string $sql
- * @return Cake\Model\Datasource\Database\Statement
- **/
-	public abstract function prepare($sql);
 
 }
