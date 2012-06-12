@@ -282,6 +282,17 @@ class ControllerTestCaseTest extends CakeTestCase {
 	}
 
 /**
+ * Make sure testAction() loads correct plugin model.
+ *
+ * @return void
+ */
+	public function testTestActionCorrectModel() {
+		$Controller = $this->Case->generate('TestPlugin.TestPluginPosts');
+		$this->Case->testAction('/test_plugin/test_plugin_posts/index');
+		$this->assertEquals('posts', $this->Case->controller->viewVars['posts']);
+	}
+
+/**
  * Tests using loaded routes during tests
  *
  * @return void
