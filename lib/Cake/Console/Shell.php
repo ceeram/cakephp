@@ -380,7 +380,7 @@ class Shell extends Object {
 		}
 
 		$this->command = $command;
-		if (!empty($this->params['help'])) {
+		if (!$isTask && !empty($this->params['help'])) {
 			return $this->_displayHelp($command);
 		}
 
@@ -390,6 +390,10 @@ class Shell extends Object {
 
 		if ($isTask) {
 			$command = Inflector::camelize($command);
+			$subCommand = current($argv);
+			if (!empty($this->params['help']) && $this->{$command}->hasMethod($subCommand)) {
+				return $this->{$command}->_displayHelp($subCommand);
+			}
 			return $this->{$command}->runCommand('execute', $argv);
 		}
 		if ($isMethod) {
@@ -408,7 +412,7 @@ class Shell extends Object {
  * @param string $command
  * @return void
  */
-	protected function _displayHelp($command) {
+	public function _displayHelp($command) {
 		$format = 'text';
 		if (!empty($this->args[0]) && $this->args[0] == 'xml') {
 			$format = 'xml';
@@ -416,7 +420,7 @@ class Shell extends Object {
 		} else {
 			$this->_welcome();
 		}
-		return $this->out($this->OptionParser->help($command, $format));
+		return $this->out($this->getOptionParser()->help($command, $format));
 	}
 
 /**
