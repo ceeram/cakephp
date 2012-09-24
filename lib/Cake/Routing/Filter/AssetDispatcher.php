@@ -64,8 +64,7 @@ class AssetDispatcher extends DispatcherFilter {
 			return $response;
 		}
 
-		$pathSegments = explode('.', $url);
-		$ext = array_pop($pathSegments);
+		$ext = array_pop($pathSegments = explode('.', $url));
 		$this->_deliverAsset($response, $assetFile, $ext);
 		return $response;
 	}
