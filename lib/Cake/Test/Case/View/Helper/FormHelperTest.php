@@ -5966,7 +5966,7 @@ class FormHelperTest extends CakeTestCase {
 			'label' => 'Current Text', 'value' => "GREAT®", 'rows' => '15', 'cols' => '75'
 		));
 		$expected = array(
-			'div' => array('class' => 'input text'),
+			'div' => array('class' => 'input textarea'),
 				'label' => array('for' => 'PostContent'),
 					'Current Text',
 				'/label',
