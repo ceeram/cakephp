@@ -35,6 +35,7 @@ class AllViewTest extends PHPUnit_Framework_TestSuite {
 		$suite = new CakeTestSuite('All View class tests');
 
 		$suite->addTestDirectory(CORE_TEST_CASES . DS . 'View');
+		$suite->addTestDirectory(CORE_TEST_CASES . DS . 'View' . DS . 'Helper');
 		return $suite;
 	}
 }

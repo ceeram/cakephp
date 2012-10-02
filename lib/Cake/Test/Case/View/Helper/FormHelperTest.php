@@ -743,23 +743,23 @@ class FormHelperTest extends CakeTestCase {
  */
 	public function testDuplicateFieldNameResolution() {
 		$result = $this->Form->create('ValidateUser');
-		$this->assertEquals(array('ValidateUser'), $this->Form->entity());
+		$this->assertEquals(array('ValidateUser'), $this->Form->Model->entity());
 
 		$result = $this->Form->input('ValidateItem.name');
-		$this->assertEquals(array('ValidateItem', 'name'), $this->Form->entity());
+		$this->assertEquals(array('ValidateItem', 'name'), $this->Form->Model->entity());
 
 		$result = $this->Form->input('ValidateUser.name');
-		$this->assertEquals(array('ValidateUser', 'name'), $this->Form->entity());
+		$this->assertEquals(array('ValidateUser', 'name'), $this->Form->Model->entity());
 		$this->assertRegExp('/name="data\[ValidateUser\]\[name\]"/', $result);
 		$this->assertRegExp('/type="text"/', $result);
 
 		$result = $this->Form->input('ValidateItem.name');
-		$this->assertEquals(array('ValidateItem', 'name'), $this->Form->entity());
+		$this->assertEquals(array('ValidateItem', 'name'), $this->Form->Model->entity());
 		$this->assertRegExp('/name="data\[ValidateItem\]\[name\]"/', $result);
 		$this->assertRegExp('/<textarea/', $result);
 
 		$result = $this->Form->input('name');
-		$this->assertEquals(array('ValidateUser', 'name'), $this->Form->entity());
+		$this->assertEquals(array('ValidateUser', 'name'), $this->Form->Model->entity());
 		$this->assertRegExp('/name="data\[ValidateUser\]\[name\]"/', $result);
 		$this->assertRegExp('/type="text"/', $result);
 	}
@@ -1501,18 +1501,18 @@ class FormHelperTest extends CakeTestCase {
 		$Contact = ClassRegistry::getObject('Contact');
 		$Contact->validationErrors[0]['email'] = array('Please provide an email');
 
-		$this->Form->setEntity('Contact.0.email');
-		$result = $this->Form->tagIsInvalid();
+		$this->Form->Model->setEntity('Contact.0.email');
+		$result = $this->Form->Model->tagIsInvalid();
 		$expected = array('Please provide an email');
 		$this->assertEquals($expected, $result);
 
-		$this->Form->setEntity('Contact.1.email');
-		$result = $this->Form->tagIsInvalid();
+		$this->Form->Model->setEntity('Contact.1.email');
+		$result = $this->Form->Model->tagIsInvalid();
 		$expected = false;
 		$this->assertSame($expected, $result);
 
-		$this->Form->setEntity('Contact.0.name');
-		$result = $this->Form->tagIsInvalid();
+		$this->Form->Model->setEntity('Contact.0.name');
+		$result = $this->Form->Model->tagIsInvalid();
 		$expected = false;
 		$this->assertSame($expected, $result);
 	}
@@ -1555,7 +1555,7 @@ class FormHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testEmptyErrorValidation() {
-		$this->Form->validationErrors['Contact']['password'] = '';
+		$this->Form->Model->validationErrors['Contact']['password'] = '';
 		$result = $this->Form->input('Contact.password');
 		$expected = array(
 			'div' => array('class' => 'input password error'),
@@ -1583,7 +1583,7 @@ class FormHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testEmptyInputErrorValidation() {
-		$this->Form->validationErrors['Contact']['password'] = 'Please provide a password';
+		$this->Form->Model->validationErrors['Contact']['password'] = 'Please provide a password';
 		$result = $this->Form->input('Contact.password', array('error' => ''));
 		$expected = array(
 			'div' => array('class' => 'input password error'),
@@ -2092,8 +2092,8 @@ class FormHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected);
 
-		$this->Form->setEntity(null);
-		$this->Form->setEntity('Contact.field');
+		$this->Form->Model->setEntity(null);
+		$this->Form->Model->setEntity('Contact.field');
 		$result = $this->Form->input('Contact.field', array(
 			'after' => 'A message to you, Rudy', 'error' => false
 		));
@@ -2620,7 +2620,7 @@ class FormHelperTest extends CakeTestCase {
  */
 	public function testInputWithNonStandardPrimaryKeyMakesHidden() {
 		$this->Form->create('User');
-		$this->Form->fieldset = array(
+		$this->Form->Model->fieldset = array(
 			'User' => array(
 				'fields' => array(
 					'model_id' => array('type' => 'integer')
@@ -7966,7 +7966,7 @@ class FormHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testCustomValidationErrors() {
-		$this->Form->validationErrors['Thing']['field'] = 'Badness!';
+		$this->Form->Model->validationErrors['Thing']['field'] = 'Badness!';
 		$result = $this->Form->error('Thing.field', null, array('wrap' => false));
 		$this->assertEquals('Badness!', $result);
 	}
@@ -8109,7 +8109,7 @@ class FormHelperTest extends CakeTestCase {
 	public function testInputDefaults() {
 		$this->Form->create('Contact');
 
-		$this->Form->inputDefaults(array(
+		$this->Form->Input->Options->defaults(array(
 			'label' => false,
 			'div' => array(
 				'style' => 'color: #000;'
@@ -8126,7 +8126,7 @@ class FormHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected);
 
-		$this->Form->inputDefaults(array(
+		$this->Form->Input->Options->defaults(array(
 			'div' => false,
 			'label' => 'Label',
 		));
@@ -8142,7 +8142,7 @@ class FormHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected);
 
-		$this->Form->inputDefaults(array(
+		$this->Form->Input->Options->defaults(array(
 			'label' => false,
 		), true);
 		$result = $this->Form->input('Contact.field1');
@@ -8154,7 +8154,7 @@ class FormHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected);
 
-		$result = $this->Form->inputDefaults();
+		$result = $this->Form->Input->Options->defaults();
 		$expected = array(
 			'div' => false,
 			'label' => false,
