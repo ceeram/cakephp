@@ -110,7 +110,7 @@ before_script:
 
 script:
   - ./lib/Cake/Console/cake test core Basics
-  - sh -c "if [ '$PHPCS' = '1' ]; then echo 'phpcs'; fi"
+  - if [ '$PHPCS' = '1' ]; then echo 'phpcs'; fi
 
 notifications:
   email: false
