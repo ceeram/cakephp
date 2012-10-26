@@ -115,7 +115,7 @@ before_script:
     }" > app/Config/database.php
 
 script:
-  - sh -c "if [ '$PHPCS' = '0' ]; then ./lib/Cake/Console/cake test core Basics; else phpcs --standard=CakePHP ./lib/Cake/Console/Command; fi"
+  - sh -c "if [ '$PHPCS' = '0' ]; then ./lib/Cake/Console/cake test core Basics; else phpcs --standard=CakePHP ./lib/Cake; fi"
 
 notifications:
   email: false
