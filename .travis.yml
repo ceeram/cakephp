@@ -8,6 +8,10 @@ env:
     PHPCS=0
 
 matrix:
+  allow_failures:
+    - php: 5.4
+      env:
+        - PHPCS=1
   include:
     - php: 5.4
       env:
@@ -27,7 +31,7 @@ before_script:
     console.log('TCP server listening on port 80 at localhost.');" > app/tmp/socket.js
   - sudo node ./app/tmp/socket.js &
   - pear channel-discover pear.cakephp.org
-  - pear install cakephp/CakePHP_CodeSniffer --alldeps
+  - pear install --alldeps cakephp/CakePHP_CodeSniffer
   - phpenv rehash
   - set +H
   - echo "<?php
@@ -111,8 +115,7 @@ before_script:
     }" > app/Config/database.php
 
 script:
-  - sh -c "if [ '$PHPCS' = '0' ]; then ./lib/Cake/Console/cake test core Basics; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs --standard=CakePHP ./lib/Cake/Console/Command; fi"
+  - sh -c "if [ '$PHPCS' = '0' ]; then ./lib/Cake/Console/cake test core Basics; else phpcs --standard=CakePHP ./lib/Cake/Console/Command; fi"
 
 notifications:
   email: false
