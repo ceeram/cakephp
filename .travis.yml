@@ -5,14 +5,13 @@ php:
 
 env:
   - DB=mysql
-  - PHPCS=0
 
 matrix:
   include:
     - php: 5.4
       env:
-        - DB: mysql
-        - PHPCS: 1
+        - DB=mysql
+        - PHPCS=1
 
 before_script:
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi"
