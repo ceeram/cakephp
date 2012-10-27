@@ -10,9 +10,11 @@ env:
 matrix:
   allow_failures:
       env:
+        - php: 5.4
         - PHPCS=1
   include:
       env:
+        - php: 5.4
         - PHPCS=1
 
 before_script:
