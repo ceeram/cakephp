@@ -31,6 +31,7 @@ before_script:
   - pear channel-discover pear.cakephp.org
   - pear install --alldeps cakephp/CakePHP_CodeSniffer
   - phpenv rehash
+  - env
   - set +H
   - echo "<?php
     class DATABASE_CONFIG {
