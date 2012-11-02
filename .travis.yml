@@ -7,11 +7,8 @@ php:
 
 env:
   - DB=mysql
-    PHPCS=0
   - DB=pgsql
-    PHPCS=0
   - DB=sqlite
-    PHPCS=0
 
 matrix:
   allow_failures:
