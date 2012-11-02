@@ -1,15 +1,5 @@
 language: php
 
-php:
-  - 5.2
-  - 5.3
-  - 5.4
-
-env:
-  - DB=mysql
-  - DB=pgsql
-  - DB=sqlite
-
 matrix:
   allow_failures:
     - php: 5.4
@@ -118,7 +108,7 @@ before_script:
     }" > app/Config/database.php
 
 script:
-  - sh -c "if [ '$PHPCS' != '1' ]; then ./lib/Cake/Console/cake test core AllTests --stderr; else phpcs --standard=CakePHP ./lib/Cake; fi"
+  - sh -c "if [ '$PHPCS' != '1' ]; then ./lib/Cake/Console/cake test core AllTests --stderr; else phpcs --standard=CakePHP -n ./lib/Cake; fi"
 
 notifications:
   email: false
