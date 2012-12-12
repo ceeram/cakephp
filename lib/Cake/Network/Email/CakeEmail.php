@@ -1160,6 +1160,7 @@ class CakeEmail {
 			$this->template($config['template'], $layout);
 			unset($config['template']);
 		}
+		$config = array_merge($this->transportClass()->config(), $config);
 		$this->transportClass()->config($config);
 	}
 
@@ -1169,6 +1170,7 @@ class CakeEmail {
  * @return CakeEmail $this
  */
 	public function reset() {
+		$this->transportClass()->config(array());
 		$this->_to = array();
 		$this->_from = array();
 		$this->_sender = array();

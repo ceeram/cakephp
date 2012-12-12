@@ -70,19 +70,22 @@ class SmtpTransport extends AbstractTransport {
  * Set the configuration
  *
  * @param array $config
- * @return void
+ * @return array Returns configs
  */
-	public function config($config = array()) {
-		$default = array(
-			'host' => 'localhost',
-			'port' => 25,
-			'timeout' => 30,
-			'username' => null,
-			'password' => null,
-			'client' => null,
-			'tls' => false
-		);
-		$this->_config = $config + $default;
+	public function config($config = null) {
+		if (is_array($config)) {
+			$default = array(
+				'host' => 'localhost',
+				'port' => 25,
+				'timeout' => 30,
+				'username' => null,
+				'password' => null,
+				'client' => null,
+				'tls' => false
+			);
+			$config = array_merge($default, $config);
+		}
+		return parent::config($config);
 	}
 
 /**
