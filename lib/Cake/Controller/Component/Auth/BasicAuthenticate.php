@@ -14,6 +14,7 @@
  */
 
 App::uses('BaseAuthenticate', 'Controller/Component/Auth');
+App::uses('CakeResponse', 'Network');
 
 /**
  * Basic Authentication adapter for AuthComponent.
@@ -89,15 +90,7 @@ class BasicAuthenticate extends BaseAuthenticate {
  * @return mixed Either false on failure, or an array of user data on success.
  */
 	public function authenticate(CakeRequest $request, CakeResponse $response) {
-		$result = $this->getUser($request);
-
-		if (empty($result)) {
-			$response->header($this->loginHeaders());
-			$response->statusCode(401);
-			$response->send();
-			return false;
-		}
-		return $result;
+		return $this->getUser($request);
 	}
 
 /**
@@ -111,12 +104,26 @@ class BasicAuthenticate extends BaseAuthenticate {
 		$pass = env('PHP_AUTH_PW');
 
 		if (empty($username) || empty($pass)) {
-			return false;
+			return $this->_notAuthorized();
 		}
-		return $this->_findUser($username, $pass);
+
+		$user = $this->_findUser($username, $pass);
+		if (!$user) {
+			return $this->_notAuthorized();
+		}
+		return $user;
 	}
 
 /**
+ * 
+ */
+	protected function _notAuthorized() {
+		$response = new CakeResponse(array('status' => 401));
+		$response->header($this->loginHeaders());
+		$response->send();
+	}
+
+	/**
  * Generate the login headers
  *
  * @return string Headers for logging in.
