@@ -1,29 +1,13 @@
 language: php
 
 php:
-  - 5.4
   - 5.5
-  - 5.6
 
 env:
   - DB=mysql db_class='Cake\Database\Driver\Mysql' db_dsn='mysql:host=0.0.0.0;dbname=cakephp_test' db_database='cakephp_test' db_login='travis' db_password=''
-  - DB=pgsql db_class='Cake\Database\Driver\Postgres' db_dsn='pgsql:host=127.0.0.1;dbname=cakephp_test' db_database="cakephp_test" db_login='postgres' db_password=''
-  - DB=sqlite db_class='Cake\Database\Driver\Sqlite' db_dsn='sqlite::memory:'
 
 services:
   - memcached
-
-matrix:
-  allow_failures:
-    - php: hhvm-nightly
-  fast_finish: true
-  include:
-    - php: 5.4
-      env: PHPCS=1
-    - php: hhvm-nightly
-      env: HHVM=1 DB=sqlite db_class='Cake\Database\Driver\Sqlite' db_dsn='sqlite::memory:'
-    - php: hhvm-nightly
-      env: HHVM=1 DB=mysql db_class='Cake\Database\Driver\Mysql' db_dsn='mysql:host=0.0.0.0;dbname=cakephp_test' db_database='cakephp_test' db_login='travis' db_password=''
 
 before_script:
   - composer self-update
@@ -43,8 +27,7 @@ before_script:
   - set +H
 
 script:
-  - sh -c "if [ '$PHPCS' != '1' ]; then phpunit; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --extensions=php --standard=CakePHP ./src ./tests; fi"
+  - sh -c "if [ '$PHPCS' != '1' ]; then phpunit tests/TestCase/Cache/Engine/MemcachedEngineTest.php; fi"
 
 notifications:
   email: false
