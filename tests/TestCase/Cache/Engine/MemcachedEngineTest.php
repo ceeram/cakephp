@@ -365,6 +365,7 @@ class MemcachedEngineTest extends TestCase {
 			method_exists($Memcached->getMemcached(), 'setSaslAuthData'),
 			'Memcached extension is installed with SASL support'
 		);
+		$Memcached->setMemcached(null);
 
 //		$this->setExpectedException(
 //			'InvalidArgumentException', 'Memcached extension is not build with SASL support'
