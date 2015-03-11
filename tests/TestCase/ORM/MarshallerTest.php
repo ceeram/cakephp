@@ -184,6 +184,7 @@ class MarshallerTest extends TestCase
     }
 
     /**
+     * @group timetests
      * Test marshalling datetime/date field.
      *
      * @return void

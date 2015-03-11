@@ -192,6 +192,7 @@ class DateTimeTypeTest extends TestCase
     }
 
     /**
+     * @group timetests
      * Tests marshalling dates using the locale aware parser
      *
      * @return void
@@ -207,6 +208,7 @@ class DateTimeTypeTest extends TestCase
     }
 
     /**
+     * @group timetests
      * Tests marshalling dates using the locale aware parser and custom format
      *
      * @return void
